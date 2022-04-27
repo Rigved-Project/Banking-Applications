@@ -115,21 +115,3 @@ app.put("/customer/:cust_id/:trans_pass",(request,response)=>{
     })
 })
 
-//a)	Update password transaction old and new password using customer id and old password
-//url=/customer/:cust_id/transaction/:old_pass/change_pass/:new_pass
-app.put("/customer/:cust_id/transaction/:old_pass/change_pass/:new_pass",(request,response)=>{
-    mongoClient.connect(dbURL,{useNewUrlParser:true},(error,client)=>{
-        if(error){
-            throw error
-        } else{
-            let cust_id=parseInt(request.params.cust_id);
-            let old_pass=request.params.old_pass;
-            let new_pass=request.params.new_pass;
-            let db=client.db("banking-app");
-            db.collection("Password").updateOne({customer_id:cust_id},{$set:{old_transaction_password:old_pass, new_transaction_password:new_pass,transaction_datetime:new Date().toUTCString()}}).then((doc)=>{
-                response.status(200).json(doc);
-                client.close();
-            })
-        }
-    })
-})
