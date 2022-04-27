@@ -199,4 +199,88 @@ app.put("/customer/:cust_id/:old_pass/change_pass/:new_pass" , (request , respon
         }
     });
 });
+//create the services for Banking application
+
+   
+  
+        app.get("/customer/cust_id/transaction/:account_id_sender", (request, response) => {
+                // connect(url, parser, callback)
+                    let account_id_sender = parseInt(request.params.account_id_sender);
+                    mongoClient.connect(dbURL, {useNewUrlParser:true}, (error, client) => {
+                        if(error) {
+                            throw error;
+                        } else {
+                            let db = client.db("banking-app");
+                            let users=[]
+                            let cursor=db.collection("Transaction").find({account_num_sender: account_id_sender});
+                            cursor.forEach((doc, err) => {
+                                if(err)
+                                    throw err;
+                                users.push(doc);
+                            }, () => {
+                                response.json(users);
+                                client.close();
+                            });
+                        }
+                    });
+                });
+
+       
+        //
+        app.post("/customer/transaction/:transfer_id/:account_num_sender", (request, response) => {
+            mongoClient.connect(dbURL, {useNewUrlParser:true}, (error, client) => {
+                if(error) {
+                    throw error;
+                } else {
+                    let account_num_sender=parseInt(request.params.account_num_sender);
+                    let transfer_id=parseInt(request.params.transfer_id)+1
+                    let db = client.db("banking-app");
+                    let customer= request.body;
+                    let account_num_receiver=customer.account_num_receiver
+                    let IFSC_code=customer.IFSC
+                    let send_amount=customer.send_amount
+                    var val = Math.floor(1000 + Math.random() * 1000);
+                    console.log(val);
+                    db.collection("Transaction").insertOne({"_id": transfer_id,
+                    "reference_num":val,
+                    "account_num_sender" : account_num_sender,
+                    "account_num_receiver" : account_num_receiver,
+                    "type" : "credit",
+                    "datetime" : new Date().toUTCString(),
+                    "IFSC" : IFSC_code,
+                    "send_amount" : send_amount
+                })
+                    .then((doc) => { 
+                   
+                     if(doc!=null){                
+                            response.json(doc);    
+                    }else{
+                        response.json({"message":`Duplicate ${transfer_id} id found`})
+                    }
+                    client.close();
+                })
+                }
+            });
+        });
+        
+        //for get data from transaction
+app.get("/transaction", (request, response) => {
+    // connect(url, parser, callback)
+    mongoClient.connect(dbURL, {useNewUrlParser:true}, (error, client) => {
+        if(error) 
+            throw error;
+        let db = client.db("banking-app");
+        let cursor = db.collection("Transaction").find();
+        let users = [];
+        //cursor.forEach(callback1, callback2)
+        cursor.forEach((doc, err) => {
+            if(err)
+                throw err;
+            users.push(doc);
+        }, () => {
+            response.json(users);
+            client.close();
+        });
+    });
+});
 
