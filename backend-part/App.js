@@ -18,7 +18,6 @@ app.use(parser.json());
 app.use(cors());
 //a)	Get name, account number, account type and available balance using customer id
 //url=/customer/:cust_id
-
 app.get("/customer/:cust_id",(request,response)=>{
     mongoClient.connect(dbURL,{useNewUrlParser:true},(error,client)=>{
         if(error){
