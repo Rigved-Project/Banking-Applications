@@ -10,6 +10,22 @@ let dbURL = "mongodb://localhost:27017";
 app.listen(PORT , () => console.log(`Server is running in ${PORT}`));
 
 app.use(cors());
+<<<<<<< HEAD
+//a)	Get name, account number, account type and available balance using customer id
+//url=/customer/:cust_id
+app.get("/customer/:cust_id",(request,response)=>{
+    mongoClient.connect(dbURL,{useNewUrlParser:true},(error,client)=>{
+        if(error){
+            throw error
+        } else{
+            let cust_id=parseInt(request.params.cust_id);
+            let db=client.db("banking-app");
+            db.collection("Account").findOne({customer_id:cust_id}).then((doc)=>{
+                if(doc!=null){
+                    response.status(200).json(doc);
+                } else{
+                    response.status(404).json({"message":`Sorry ${cust_id} doesn't exist`})
+=======
 app.use(bodyParser.json());
 
 //Customer Login Service
@@ -27,6 +43,7 @@ app.get("/customer/:cust_id/:pass" , (request , response) =>{
                     response.json(doc)
                 }else{
                     response.status(404).json({"message":`sorry id or password is wrong`} )
+>>>>>>> main
                 }
                 client.close();
             });
