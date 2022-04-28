@@ -182,7 +182,7 @@ app.put("/customer/:cust_id/change_pass/:new_pass" , (request , response) => {
 //Update password customer old and new password using customer id and old password
 app.put("/customer/:cust_id/:old_pass/change_pass/:new_pass" , (request , response) => {
     let cust_id = parseInt(request.params.cust_id);
-    let old_pass = request.params.password;
+    let old_pass = request.params.old_pass;
     let new_pass = request.params.new_pass;
    
     mongoClient.connect(dbURL , {useNewUrlParser:true} , (error , client) => {
