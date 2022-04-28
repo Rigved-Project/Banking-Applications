@@ -78,7 +78,7 @@ app.put("/customer/:account_no/:ifsc/increase_balance/:balance",(request,respons
 
 //c)	Get transaction password using customer id
 //url=/customer/:cust_id/transaction
-app.get("/customer/:cust_id/transaction",(request,response)=>{
+app.get("/customer/:cust_id/pass/transaction",(request,response)=>{
     mongoClient.connect(dbURL,{useNewUrlParser:true},(error,client)=>{
         if(error){
             throw error
@@ -136,14 +136,14 @@ app.put("/customer/:cust_id/transaction/:old_pass/change_pass/:new_pass",(reques
 
 //Customer Login Service
 app.get("/customer/:cust_id/:pass" , (request , response) =>{
-    let cust_id = parseInt(request.params.id);
-    let pass = request.params.password;
+    let cust_id = parseInt(request.params.cust_id);
+    let pass = request.params.pass;
     mongoClient.connect(dbURL , {useNewUrlParser: true} , (error , client) =>{
         if(error) {
             throw error;
         }else {
-            let db = client.db("newdb");
-            db.collection("customer").findOne({_id:cust_id , password : pass})
+            let db = client.db("banking-app");
+            db.collection("Customer").findOne({_id:cust_id , password : pass})
             .then((doc) => {
                 if (doc!=null) {
                     response.json(doc)
@@ -157,6 +157,7 @@ app.get("/customer/:cust_id/:pass" , (request , response) =>{
 });
 
 
+
 //Update password of a customer
 app.put("/customer/:cust_id/change_pass/:new_pass" , (request , response) => {
     let cust_id = parseInt(request.params.cust_id);
@@ -165,9 +166,9 @@ app.put("/customer/:cust_id/change_pass/:new_pass" , (request , response) => {
         if(error) {
             throw error;
         }else{
-            let db = client.db("newdb");
+            let db = client.db("banking-app");
            
-            db.collection("customer").updateOne({_id:cust_id},{$set:{password:new_pass}})
+            db.collection("Customer").updateOne({_id:cust_id},{$set:{password:new_pass}})
             .then((doc) => {
                 response.json(doc);
                 client.close();
@@ -188,9 +189,9 @@ app.put("/customer/:cust_id/:old_pass/change_pass/:new_pass" , (request , respon
         if(error) {
             throw error;
         }else {
-            let db= client.db("newdb");
+            let db= client.db("banking-app");
 
-            db.collection("password").updateOne({customer_id:cust_id },{$set:{old_login_password:old_pass,new_login_password:new_pass,login_datetime:new Date().toUTCString()}})
+            db.collection("Password").updateOne({customer_id:cust_id },{$set:{old_login_password:old_pass,new_login_password:new_pass,login_datetime:new Date().toUTCString()}})
             .then((doc) => {
                 response.json(doc);
                 client.close();
