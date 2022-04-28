@@ -10,6 +10,6 @@ Operations in Web Services done
 
 use port number 3002
 
-Apurva Adhole : Customer => Done
-Jayesh Saindane : Account => Done
-Sumit Singh : Transaction, Password => Pending
+Apurva Adhole : Customer,  Password
+Jayesh Saindane : Account
+Sumit Singh : Transaction
