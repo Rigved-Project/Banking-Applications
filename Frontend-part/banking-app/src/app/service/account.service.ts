@@ -5,18 +5,18 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CustomerService {
+export class AccountService {
 
   constructor(private _http:HttpClient) { }
   baseUrl="http://localhost:3002"
 
-  public login(cust_id:number,pass:any):Observable<any>{
-    let url=`${this.baseUrl}/customer/${cust_id}/${pass}`;
+  public getAccount(cust_id:number):Observable<any>{
+    let url=`${this.baseUrl}/customer/${cust_id}`;
     return this._http.get(url)
   }
 
-  public updateLoginPass(cust_id:number,new_pass:any,data:any):Observable<any>{
-    let url=`${this.baseUrl}/customer/${cust_id}/change_pass/${new_pass}`;
+  public updateTransPass(cust_id:number,trans_pass:any,data:any):Observable<any>{
+    let url=`${this.baseUrl}/customer/${cust_id}/${trans_pass}`;
     return this._http.put(url,data)
   }
 }

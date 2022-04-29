@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CustomerService } from 'src/app/service/customer.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +10,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _builder: FormBuilder, 
+    private _service: CustomerService, 
+    private _router: Router) { }
 
-  ngOnInit(): void {
+    loginForm : FormGroup = this._builder.group({
+      _id: [], password: []
+    });
+    errorMessage : string | undefined = undefined;
+  
+
+  ngOnInit(): void {}
+ 
+  handleSubmit() {
+    let cust_id = this.loginForm.controls['_id'].value;
+    let pass = this.loginForm.controls['password'].value;
+    this._service.login(cust_id, pass).subscribe({
+      next: (data) => {
+        this._router.navigate(['sucess', data._id,data.password])
+      }, 
+      error: (err) => {
+        this.errorMessage = err.error.message;
+        this.loginForm.reset({});
+      }
+    });
   }
+
 
 }

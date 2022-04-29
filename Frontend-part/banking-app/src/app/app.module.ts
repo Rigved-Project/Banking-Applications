@@ -15,7 +15,8 @@ import { TransfersPasswordComponent } from './components/transfers-password/tran
 import { ChangeLoginPasswordComponent } from './components/change-login-password/change-login-password.component';
 import { ChangeTransferPasswordComponent } from './components/change-transfer-password/change-transfer-password.component';
 import { SuccessLoginComponent } from './components/success-login/success-login.component';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule} from '@angular/common/http'
 
 @NgModule({
   declarations: [
@@ -35,7 +36,10 @@ import { SuccessLoginComponent } from './components/success-login/success-login.
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

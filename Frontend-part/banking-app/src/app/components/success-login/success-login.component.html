@@ -1,0 +1,31 @@
+<div class="container-fluid" class="row">
+    <div class="col-4" *ngIf="customer && account">
+        <table>
+            <tr>
+                <th>Name:</th>
+                <td>{{customer.customer_name}}</td>
+            </tr>
+            <tr>
+                <th>Account Number:</th>
+                <td>{{account._id}}</td>
+            </tr>
+            <tr>
+                <th>Account Type:</th>
+                <th>{{account.account_type}}</th>
+            </tr>
+            <tr>
+                <th>Available Balance:</th>
+                <td>{{account.main_balance}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-5">
+        <div>
+            <a routerLink="account-activity">Account Activity</a> /
+            <a routerLink="transfer">Transfers</a> /
+            <a routerLink="change-password">Change Password</a> /
+            <a routerLink="/home">Logout</a> /
+        </div>
+        <router-outlet></router-outlet>
+    </div>
+</div>
