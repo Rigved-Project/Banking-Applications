@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomerService } from 'src/app/service/customer.service';
 
@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
     private _router: Router) { }
 
     loginForm : FormGroup = this._builder.group({
-      _id: [], password: []
+      _id: ['',Validators.required], password: ['',Validators.required]
     });
     errorMessage : string | undefined = undefined;
   

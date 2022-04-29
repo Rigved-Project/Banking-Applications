@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CustomerService } from 'src/app/service/customer.service';
 import { TransactionService } from 'src/app/service/transaction.service';
@@ -18,23 +18,30 @@ export class ChangeLoginPasswordComponent implements OnInit {
     
   }
 
-  password=new FormControl('')
+  password=new FormControl('',Validators.required)
+  again_pass=new FormControl('',Validators.required)
   handleUpdate(){
-    this._actived_rout.parent?.parent?.params.subscribe({
-      next:(params:Params)=>{
-        this._customer_service.updateLoginPass(params['cust_id'],this.password.value,undefined).subscribe({
-          next:(data)=>{console.log(data)
-            //this.modifiedCount=data.modifiedCount
-          }
-        });
-        this._transaction_service.updatePasslogin(params['cust_id'],params['pass'],this.password.value,undefined).subscribe({
-          next:(data)=>console.log(data)
-        })
-        
-        
-        this._rout.navigate(['/home'])
-      }
-    })
+    if(this.password.value==this.again_pass.value){
+      this._actived_rout.parent?.parent?.params.subscribe({
+        next:(params:Params)=>{
+          this._customer_service.updateLoginPass(params['cust_id'],this.password.value,undefined).subscribe({
+            next:(data)=>{console.log(data)
+              //this.modifiedCount=data.modifiedCount
+            }
+          });
+          this._transaction_service.updatePasslogin(params['cust_id'],params['pass'],this.password.value,undefined).subscribe({
+            next:(data)=>console.log(data)
+          })
+          
+          
+          this._rout.navigate(['/home'])
+        }
+      })
+
+    } else{
+      
+      alert('password is not match')
+    }
   }
 
 }

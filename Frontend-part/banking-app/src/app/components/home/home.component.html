@@ -1,37 +1,49 @@
 <div class = "container-fluid" >
     <div class="row justify-content-center">
     <div class="form-group col-md-10  align-center ">   
-    <h3 class="text-bold">Login Form</h3>
-    <div *ngIf = "errorMessage" class = "row">
-        <div class = "col-3">
-            <div class = "alert alert-danger">{{errorMessage}}</div>
-        </div>
-    </div>
-    <form [formGroup] = "loginForm" (ngSubmit) = "handleSubmit()" >
-       <div class = "form-group">
-        <div class = "row">
-            <div class = "col-3">
-               <label>Profile Id</label>
-                <input formControlName = "_id" type = "number" class = "form-control">
+        <div class="row">
+            
+            <div class="col-3">
+                <h3 class="text-bold">Login Form</h3>
+                <div *ngIf = "errorMessage" class = "row">
+                    <div >
+                        <div class = "alert alert-danger">{{errorMessage}}</div>
+                    </div>
+                </div>
+                <form [formGroup] = "loginForm" (ngSubmit) = "handleSubmit()" >
+                   <div class = "form-group">
+                    <div class = "row">
+                        <div >
+                           <label>Profile Id</label>
+                            <input formControlName = "_id" type = "number" class = "form-control">
+                            <div [hidden]=" loginForm.controls['_id'].valid || loginForm.controls['_id'].pristine">
+                                <span>Profile Id is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "row">
+                        <div >
+                           <label>Password</label>
+                            <input formControlName = "password" type = "password" class = "form-control">
+                            <div [hidden]="loginForm.controls['password'].valid || loginForm.controls['password'].pristine">
+                                <span>Password is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class = "row">
+                        <div class = "col-4">
+                            <input type = "submit" value = "Login" class = "btn btn-primary" [disabled]="loginForm.invalid">
+                        </div>
+                        <div class = "col-1">
+                            <input type = "reset" value = "Reset" class = "btn btn-primary">
+                        </div>
+                    </div>
+                </div>
+             </form>
+
             </div>
         </div>
-        <div class = "row">
-            <div class = "col-3">
-               <label>Password</label>
-                <input formControlName = "password" type = "password" class = "form-control">
-            </div>
-        </div>
-        <br />
-        <div class = "row">
-            <div class = "col-2">
-                <input type = "submit" value = "Login" class = "btn btn-primary">
-            </div>
-            <div class = "col-2">
-                <input type = "reset" value = "Reset" class = "btn btn-primary">
-            </div>
-        </div>
-    </div>
- </form>
 </div>
 </div>
 </div>

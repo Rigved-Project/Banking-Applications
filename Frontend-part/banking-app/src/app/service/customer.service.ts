@@ -10,6 +10,10 @@ export class CustomerService {
   constructor(private _http:HttpClient) { }
   baseUrl="http://localhost:3002"
 
+  public getCustomer():Observable<any>{
+    return this._http.get(`${this.baseUrl}/customer`)
+  }
+
   public login(cust_id:number,pass:any):Observable<any>{
     let url=`${this.baseUrl}/customer/${cust_id}/${pass}`;
     return this._http.get(url)
