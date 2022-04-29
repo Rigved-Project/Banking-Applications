@@ -161,7 +161,7 @@ app.get("/customer/:cust_id/:pass" , (request , response) =>{
 //Update password of a customer
 app.put("/customer/:cust_id/change_pass/:new_pass" , (request , response) => {
     let cust_id = parseInt(request.params.cust_id);
-    let new_pass = parseInt(request.params.new_pass);
+    let new_pass = request.params.new_pass;
     mongoClient.connect(dbURL , {useNewUrlParser:true} , (error , client) =>{
         if(error) {
             throw error;
@@ -226,6 +226,29 @@ app.put("/customer/:cust_id/:old_pass/change_pass/:new_pass" , (request , respon
                     });
                 });
 
+                ///customer/cust_id/transaction/account_receiver/:account_id_receiver
+       
+                app.get("/customer/cust_id/transaction/account_receiver/:account_id_receiver", (request, response) => {
+                    // connect(url, parser, callback)
+                        let account_num_receiver = parseInt(request.params.account_id_receiver);
+                        mongoClient.connect(dbURL, {useNewUrlParser:true}, (error, client) => {
+                            if(error) {
+                                throw error;
+                            } else {
+                                let db = client.db("banking-app");
+                                let users=[]
+                                let cursor=db.collection("Transaction").find({account_num_receiver : account_num_receiver});
+                                cursor.forEach((doc, err) => {
+                                    if(err)
+                                        throw err;
+                                    users.push(doc);
+                                }, () => {
+                                    response.json(users);
+                                    client.close();
+                                });
+                            }
+                        });
+                    });
        
         //
         app.post("/customer/transaction/:transfer_id/:account_num_sender", (request, response) => {
