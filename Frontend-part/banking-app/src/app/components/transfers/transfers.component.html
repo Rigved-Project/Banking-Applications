@@ -1,1 +1,52 @@
-<p>transfers works!</p>
+<div>
+    <form [formGroup] = "FormValue" (ngSubmit) = "handleTransfer()" >
+        <div class = "form-group">
+         <div class = "row">
+             <div class = "col-3">
+                <label>Account Number:</label>
+                 <input formControlName = "account_num_receiver" type = "number" class = "form-control">
+             </div>
+         </div>
+         <div class = "row">
+             <div class = "col-3">
+                <label>Name:</label>
+                 <input formControlName = "name" type = "text" class = "form-control" placeholder="Optional">
+             </div>
+         </div>
+         <div class = "row">
+            <div class = "col-3">
+               <label>IFSC Code:</label>
+                <input formControlName = "IFSC" type = "text" class = "form-control">
+            </div>
+        </div>
+        <div class = "row">
+            <div class = "col-3">
+               <label>Amount:</label>
+                <input formControlName = "send_amount" type = "text" class = "form-control">
+            </div>
+        </div>
+         <br />
+         <div class = "row">
+             <div class = "col-2">
+                 <input type = "submit" value = "Transfer" class = "btn btn-primary">
+             </div>
+             
+         </div>
+     </div>
+  </form>
+  <br>
+  <div *ngIf="formValue">
+        <div *ngIf = "errorMessage" class = "row">
+            <div class = "col-3">
+                <div class = "alert alert-danger">{{errorMessage}}</div>
+            </div>
+        </div>
+      <div>
+          Enter Transaction Password: <input type="password" [formControl]="password" class = "form-control">
+      </div>
+      <br>
+      <div>
+          <input type="submit" value="Submit" (click)="handleSubmit()">
+      </div>
+  </div>
+</div>

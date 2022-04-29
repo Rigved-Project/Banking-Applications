@@ -9,8 +9,6 @@ import { ContactUsComponent } from './components/contact-us/contact-us.component
 import { HomeComponent } from './components/home/home.component';
 import { InvestorsComponent } from './components/investors/investors.component';
 import { SuccessLoginComponent } from './components/success-login/success-login.component';
-import { TransfersInputsComponent } from './components/transfers-inputs/transfers-inputs.component';
-import { TransfersPasswordComponent } from './components/transfers-password/transfers-password.component';
 import { TransfersComponent } from './components/transfers/transfers.component';
 
 const routes: Routes = [
@@ -19,11 +17,7 @@ const routes: Routes = [
   {path:"sucess/:cust_id/:pass",component:SuccessLoginComponent,children:[
     {path:"",component:AccountActivityComponent},
     {path:"account-activity",component:AccountActivityComponent},
-    {path:"transfer",component:TransfersComponent,children:[
-      {path:"",component:TransfersInputsComponent},
-      {path:"transfer-input",component:TransfersInputsComponent},
-      {path:"transfer-password",component:TransfersPasswordComponent}
-    ]},
+    {path:"transfer",component:TransfersComponent},
     {path:"change-password",component:ChangePasswordComponent,children:[
       {path:"",component:ChangeLoginPasswordComponent},
       {path:"change-login-password",component:ChangeLoginPasswordComponent},

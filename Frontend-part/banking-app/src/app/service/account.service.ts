@@ -19,4 +19,22 @@ export class AccountService {
     let url=`${this.baseUrl}/customer/${cust_id}/${trans_pass}`;
     return this._http.put(url,data)
   }
+
+  public getTransPass(cust_id:number,tran_pass:any):Observable<any>{
+    let url=`${this.baseUrl}/customer/${cust_id}/pass/transaction/${tran_pass}`;
+    return this._http.get(url)
+  }
+
+  public updateAccountBalSender(cust_id:number,account_no_sender:number,balance:number,data:any):Observable<any>{
+    let url=`${this.baseUrl}/customer/${cust_id}/${account_no_sender}/reduce_balance/${balance}`;
+    return this._http.put(url,data)
+  }
+
+  public updateAccountBalReceiver(account_no_receiver:number,ifsc:any,balance:number,data:any):Observable<any>{
+    let url=`${this.baseUrl}/customer/${account_no_receiver}/${ifsc}/increase_balance/${balance}`;
+    return this._http.put(url,data)
+  }
+
+
+
 }

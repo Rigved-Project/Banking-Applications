@@ -40,13 +40,13 @@ app.get("/customer/:cust_id",(request,response)=>{
 
 //b)	Update balance on basis of account number (Once the amount is transferred to anyone’s account the amount in the destination account table should also be updated as a total amount the account has. Store the date, bankid and IFSC when the transaction happens accordingly)
 //Sender  url=/customer/:cust_id/:account_no/reduce_balance/:balance
-app.put("/customer/:cust_id/:account_no/reduce_balance/:balance",(request,response)=>{
+app.put("/customer/:cust_id/:account_no_sender/reduce_balance/:balance",(request,response)=>{
     mongoClient.connect(dbURL,{useNewUrlParser:true},(error,client)=>{
         if(error){
             throw error
         } else{
             let cust_id=parseInt(request.params.cust_id);
-            let account_no=parseInt(request.params.account_no);
+            let account_no=parseInt(request.params.account_no_sender);
             let balance=parseInt(request.params.balance);
             let db = client.db("banking-app");
             db.collection("Account").updateOne({customer_id:cust_id,_id:account_no},{$inc:{main_balance:-balance}}).then((doc)=>{
@@ -59,12 +59,12 @@ app.put("/customer/:cust_id/:account_no/reduce_balance/:balance",(request,respon
 
 //b)	Update balance on basis of account number (Once the amount is transferred to anyone’s account the amount in the destination account table should also be updated as a total amount the account has. Store the date, bankid and IFSC when the transaction happens accordingly)
 //2)Receiver url= /customer/:account_no/:ifsc/increase _balance/:balance
-app.put("/customer/:account_no/:ifsc/increase_balance/:balance",(request,response)=>{
+app.put("/customer/:account_no_receiver/:ifsc/increase_balance/:balance",(request,response)=>{
     mongoClient.connect(dbURL,{useNewUrlParser:true},(error,client)=>{
         if(error){
             throw error
         } else{
-            let account_no=parseInt(request.params.account_no);
+            let account_no=parseInt(request.params.account_no_receiver);
             let balance=parseInt(request.params.balance);
             let ifsc=request.params.ifsc
             let db = client.db("banking-app");
@@ -76,21 +76,22 @@ app.put("/customer/:account_no/:ifsc/increase_balance/:balance",(request,respons
     })
 })
 
-//c)	Get transaction password using customer id
+//c)	Get transaction password using customer id and pass
 //url=/customer/:cust_id/transaction
-app.get("/customer/:cust_id/pass/transaction",(request,response)=>{
+app.get("/customer/:cust_id/pass/transaction/:tran_pass",(request,response)=>{
     mongoClient.connect(dbURL,{useNewUrlParser:true},(error,client)=>{
         if(error){
             throw error
         } else{
             let cust_id=parseInt(request.params.cust_id);
+            let tran_pass=request.params.tran_pass
             let db=client.db("banking-app");
-            db.collection("Account").findOne({customer_id:cust_id}).then((doc)=>{
+            db.collection("Account").findOne({customer_id:cust_id,password: tran_pass}).then((doc)=>{
                 if(doc!=null){
                     let pass=doc.password;
                     response.status(200).json(pass);
                 }else{
-                    response.status(404).json({"message":`Sorry ${cust_id} doesn't exist`})
+                    response.status(404).json({"message":`Please enter correct password`})
                 }
             })
         }

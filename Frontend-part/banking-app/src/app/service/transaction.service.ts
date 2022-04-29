@@ -29,4 +29,14 @@ export class TransactionService {
     let url=`${this.baseUrl}/customer/${cust_id}/${old_pass}/change_pass/${new_pass}`;
     return this._http.put(url,data)
   }
+
+  public getTransaction():Observable<any>{
+    let url=`${this.baseUrl}/transaction`;
+    return this._http.get(url)
+  }
+
+  public postTransaction(transfer_id:number,account_num_sender:number,data:any):Observable<any>{
+    let url=`${this.baseUrl}/customer/transaction/${transfer_id}/${account_num_sender}`;
+    return this._http.post(url,data)
+  }
 }

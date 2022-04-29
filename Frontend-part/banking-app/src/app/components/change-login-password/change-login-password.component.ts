@@ -24,7 +24,7 @@ export class ChangeLoginPasswordComponent implements OnInit {
       next:(params:Params)=>{
         this._customer_service.updateLoginPass(params['cust_id'],this.password.value,undefined).subscribe({
           next:(data)=>{console.log(data)
-            this.modifiedCount=data.modifiedCount
+            //this.modifiedCount=data.modifiedCount
           }
         });
         this._transaction_service.updatePasslogin(params['cust_id'],params['pass'],this.password.value,undefined).subscribe({
@@ -32,9 +32,9 @@ export class ChangeLoginPasswordComponent implements OnInit {
         })
         
         
+        this._rout.navigate(['/home'])
       }
     })
-    this._rout.navigate(['/home'])
   }
 
 }
