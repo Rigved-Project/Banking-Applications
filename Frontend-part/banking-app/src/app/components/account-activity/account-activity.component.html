@@ -1,1 +1,40 @@
-<p>account-activity works!</p>
+<div *ngIf="transaction_send && transaction_receive">
+    <h3>Customer Send Data</h3>
+    <table class="table table-hover">
+        <thead>
+            <th>Transaction Id</th>
+            <th>Account Number</th>
+            <th>Send Amount</th>
+            <th>Transaction Type</th>
+            <th>Reference Number</th>
+            <th>Date and Time</th>
+        </thead>
+        <tbody *ngFor="let send of transaction_send">
+            <td>{{send._id}}</td>
+            <td>{{send.account_num_receiver}}</td>
+            <td>{{send.send_amount}}</td>
+            <td>debit</td>
+            <td>{{send.reference_num}}</td>
+            <td>{{send.datetime}}</td>
+        </tbody>
+    </table>
+    <h3>Customer Receive Data</h3>
+    <table>
+        <thead>
+            <th>Transaction Id</th>
+            <th>Account Number</th>
+            <th>Receive Amount</th>
+            <th>Transaction Type</th>
+            <th>Reference Number</th>
+            <th>Date and Time</th>
+        </thead>
+        <tbody *ngFor="let receive of transaction_receive">
+            <td>{{receive._id}}</td>
+            <td>{{receive.account_num_sender}}</td>
+            <td>{{receive.send_amount}}</td>
+            <td>{{receive.type}}</td>
+            <td>{{receive.reference_num}}</td>
+            <td>{{receive.datetime}}</td>
+        </tbody>
+    </table>
+</div>

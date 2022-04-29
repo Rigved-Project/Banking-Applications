@@ -1,16 +1,11 @@
-<div class = "container-fluid">
+<div class="container-fluid">
   <div>
-      <h2 class = "alert alert-primary text-center">Welcome to Rio Banking App</h2>
+    <a routerLink="home">Home</a> /
+    <a routerLink="investor">Investor</a> /
+    <a routerLink="about-us">About Us</a> /
+    <a routerLink="contact-us">Contact Us</a> /
   </div>
-  <div class = "container">
-      <a routerLink = "about-us">About Us</a>
-      /
-      <a routerLink = "contact-us">Contact Us</a>
-      /
-      <a routerLink = "success-login">Login</a>
-
-  </div>
-  <div class = "container">
-      <router-outlet></router-outlet>
+  <div>
+    <router-outlet></router-outlet>
   </div>
 </div>
