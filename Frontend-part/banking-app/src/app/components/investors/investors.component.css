@@ -1,0 +1,14 @@
+body{
+  background-color: rgb(246, 241, 234);
+}
+
+h3 {
+    font-size: 40px
+}
+
+h2 {
+    text-align: center;
+    font-style: italic;
+    font-size: 25px;
+    font-weight: normal;
+  }

@@ -3,6 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AccountService } from 'src/app/service/account.service';
 import { TransactionService } from 'src/app/service/transaction.service';
 
+
 @Component({
   selector: 'app-account-activity',
   templateUrl: './account-activity.component.html',
@@ -10,7 +11,6 @@ import { TransactionService } from 'src/app/service/transaction.service';
 })
 export class AccountActivityComponent implements OnInit {
 
-  
   transaction_send:undefined | any =undefined;
   transaction_receive:undefined | any =undefined;
   constructor(private _transaction_service:TransactionService, private _acc_service:AccountService, private _activted_rout:ActivatedRoute) { }
