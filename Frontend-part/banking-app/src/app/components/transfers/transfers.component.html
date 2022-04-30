@@ -5,9 +5,6 @@
              <div class = "col-3">
                 <label>Account Number:</label>
                  <input formControlName = "account_num_receiver" type = "number" class = "form-control">
-                 <div [hidden]="FormValue.controls['account_num_receiver'].valid || FormValue.controls['account_num_receiver'].pristine">
-                     <span>Account Number Required</span>
-                 </div>
              </div>
          </div>
          <div class = "row">
@@ -20,24 +17,18 @@
             <div class = "col-3">
                <label>IFSC Code:</label>
                 <input formControlName = "IFSC" type = "text" class = "form-control">
-                <div [hidden]="FormValue.controls['IFSC'].valid || FormValue.controls['IFSC'].pristine">
-                    <span>IFSC Code Required</span>
-                </div>
             </div>
         </div>
         <div class = "row">
             <div class = "col-3">
                <label>Amount:</label>
                 <input formControlName = "send_amount" type = "text" class = "form-control">
-                <div [hidden]="FormValue.controls['send_amount'].valid || FormValue.controls['send_amount'].pristine">
-                    <span>Amount must be between 500 to 10000</span>
-                </div>
             </div>
         </div>
          <br />
          <div class = "row">
              <div class = "col-2">
-                 <input type = "submit" value = "Transfer" class = "btn btn-primary" [disabled]="FormValue.invalid">
+                 <input type = "submit" value = "Transfer" class = "btn btn-primary">
              </div>
              
          </div>
@@ -52,13 +43,10 @@
         </div>
       <div>
           Enter Transaction Password: <input type="password" [formControl]="password" class = "form-control">
-          <div [hidden]="password.valid || password.pristine">
-              <span>Password is required</span>
-          </div>
       </div>
       <br>
       <div>
-          <input type="submit" value="Submit" (click)="handleSubmit()" [disabled]="password.invalid">
+          <input type="submit" value="Submit" (click)="handleSubmit()">
       </div>
   </div>
 </div>

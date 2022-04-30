@@ -10,11 +10,14 @@ import { ContactUsComponent } from './components/contact-us/contact-us.component
 import { AccountActivityComponent } from './components/account-activity/account-activity.component';
 import { TransfersComponent } from './components/transfers/transfers.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { TransfersInputsComponent } from './components/transfers-inputs/transfers-inputs.component';
+import { TransfersPasswordComponent } from './components/transfers-password/transfers-password.component';
 import { ChangeLoginPasswordComponent } from './components/change-login-password/change-login-password.component';
 import { ChangeTransferPasswordComponent } from './components/change-transfer-password/change-transfer-password.component';
 import { SuccessLoginComponent } from './components/success-login/success-login.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule} from '@angular/common/http'
+import { ReactiveFormsModule , FormsModule } from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http'
+
 
 @NgModule({
   declarations: [
@@ -26,6 +29,8 @@ import { HttpClientModule} from '@angular/common/http'
     AccountActivityComponent,
     TransfersComponent,
     ChangePasswordComponent,
+    TransfersInputsComponent,
+    TransfersPasswordComponent,
     ChangeLoginPasswordComponent,
     ChangeTransferPasswordComponent,
     SuccessLoginComponent

@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class AccountService {
 
   constructor(private _http:HttpClient) { }
+
   baseUrl="http://localhost:3002"
 
   public getAccount(cust_id:number):Observable<any>{
@@ -34,7 +35,4 @@ export class AccountService {
     let url=`${this.baseUrl}/customer/${account_no_receiver}/${ifsc}/increase_balance/${balance}`;
     return this._http.put(url,data)
   }
-
-
-
 }

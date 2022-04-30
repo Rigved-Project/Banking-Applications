@@ -1,31 +1,47 @@
 <div class="container-fluid" class="row">
     <div class="col-4" *ngIf="customer && account">
         <table>
-            <tr>
-                <th>Name:</th>
-                <td>{{customer.customer_name}}</td>
-            </tr>
-            <tr>
-                <th>Account Number:</th>
-                <td>{{account._id}}</td>
-            </tr>
-            <tr>
-                <th>Account Type:</th>
-                <th>{{account.account_type}}</th>
-            </tr>
-            <tr>
-                <th>Available Balance:</th>
-                <td>{{account.main_balance}}</td>
-            </tr>
+            <div class="card" style="width: 18rem;">
+                <img src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">
+                    <tr>
+                        <th>Name:</th>
+                        <td>{{customer.customer_name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Account Number:</th>
+                        <td>{{account._id}}</td>
+                    </tr>
+                    <tr>
+                        <th>Account Type:</th>
+                        <th>{{account.account_type}}</th>
+                    </tr>
+                    <tr>
+                        <th>Available Balance:</th>
+                        <td>{{account.main_balance}}</td>
+                    </tr>
+                  </p>
+                </div>
+              </div>
         </table>
     </div>
+       
+
+
     <div class="col-5">
-        <div>
-            <a routerLink="account-activity">Account Activity</a> /
-            <a routerLink="transfer">Transfers</a> /
-            <a routerLink="change-password">Change Password</a> /
-            <a routerLink="/home">Logout</a> /
-        </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+              
+              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar navbar-light" style="background-color: #e3f2fd;">
+                  <a routerLink="account-activity" class="nav-link text-dark"  href="#" >Account-activity</a>
+                  <a routerLink="transfer" class="nav-link text-dark" href="#">Transfer</a>
+                  <a routerLink="change-password" class="nav-link text-dark" href="#">Change-password</a>
+                  <a routerLink="/home" class="nav-link text-dark">Logout</a>
+                </div>
+              </div>
+            </div>
+          </nav>
         <router-outlet></router-outlet>
     </div>
-</div>

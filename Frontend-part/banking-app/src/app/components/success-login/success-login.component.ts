@@ -9,7 +9,6 @@ import { CustomerService } from 'src/app/service/customer.service';
   styleUrls: ['./success-login.component.css']
 })
 export class SuccessLoginComponent implements OnInit {
-
   account:undefined | any=undefined;
   customer:undefined | any=undefined;
   cust_err:undefined |any=undefined;
@@ -18,7 +17,7 @@ export class SuccessLoginComponent implements OnInit {
   // pass:undefined | any=undefined;
   constructor(private _cust_service:CustomerService, private _account_service:AccountService, private _activated_rout:ActivatedRoute) { }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
     this._activated_rout.params.subscribe((params:Params)=>{
       // this.cust_id=params['cust_id'];
       // this.pass=params['pass'];
@@ -33,7 +32,6 @@ export class SuccessLoginComponent implements OnInit {
 
       
     })
-
   }
-
+ 
 }

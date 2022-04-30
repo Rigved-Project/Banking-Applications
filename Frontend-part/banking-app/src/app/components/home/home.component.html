@@ -1,49 +1,34 @@
-<div class = "container-fluid" >
-    <div class="row justify-content-center">
-    <div class="form-group col-md-10  align-center ">   
-        <div class="row">
-            
-            <div class="col-3">
-                <h3 class="text-bold">Login Form</h3>
-                <div *ngIf = "errorMessage" class = "row">
-                    <div >
-                        <div class = "alert alert-danger">{{errorMessage}}</div>
-                    </div>
-                </div>
-                <form [formGroup] = "loginForm" (ngSubmit) = "handleSubmit()" >
-                   <div class = "form-group">
-                    <div class = "row">
-                        <div >
-                           <label>Profile Id</label>
-                            <input formControlName = "_id" type = "number" class = "form-control">
-                            <div [hidden]=" loginForm.controls['_id'].valid || loginForm.controls['_id'].pristine">
-                                <span>Profile Id is required</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "row">
-                        <div >
-                           <label>Password</label>
-                            <input formControlName = "password" type = "password" class = "form-control">
-                            <div [hidden]="loginForm.controls['password'].valid || loginForm.controls['password'].pristine">
-                                <span>Password is required</span>
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-                    <div class = "row">
-                        <div class = "col-4">
-                            <input type = "submit" value = "Login" class = "btn btn-primary" [disabled]="loginForm.invalid">
-                        </div>
-                        <div class = "col-1">
-                            <input type = "reset" value = "Reset" class = "btn btn-primary">
-                        </div>
-                    </div>
-                </div>
-             </form>
 
-            </div>
-        </div>
+
+<html>
+<body class="bg-image"
+style="
+  background-image: url('https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp');
+  height: 800px;
+">
+<form [formGroup] = "loginForm" (ngSubmit) = "handleSubmit()">	  
+
+<div class="login-box">
+  <h1>Login</h1>
+  <div class="textbox">
+    <i class="fas fa-user"></i>
+    <input formControlName = "_id" type = "number"  placeholder="Customer Id" >
+	<div [hidden]=" loginForm.controls['_id'].valid || loginForm.controls['_id'].pristine">
+		<span>Profile Id is required</span>
+	</div>
+  </div>
+
+  <div class="textbox">
+    <i class="fas fa-lock"></i>
+    <input formControlName = "password" type = "password" placeholder="Password">
+	<div [hidden]="loginForm.controls['password'].valid || loginForm.controls['password'].pristine">
+		<span>Password is required</span>
+	</div>
+  </div>
+
+  <input type="submit" class="btn" value="Login" [disabled]="loginForm.invalid">
 </div>
-</div>
-</div>
+</form>
+  </body>
+  </html>
+

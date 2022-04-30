@@ -1,0 +1,22 @@
+div{
+    background-color: rgb(246, 241, 234);
+}
+
+
+h1{
+    font-size: 40px;
+}
+
+h3{
+    font-size: 30px;
+   
+    font-weight: lighter;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    border-width: 50;
+    background-color: black;
+    color: white;
+}
