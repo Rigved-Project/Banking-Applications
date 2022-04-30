@@ -10,11 +10,12 @@ import { HomeComponent } from './components/home/home.component';
 import { InvestorsComponent } from './components/investors/investors.component';
 import { SuccessLoginComponent } from './components/success-login/success-login.component';
 import { TransfersComponent } from './components/transfers/transfers.component';
+import { AuthenticationGuard } from './guard/authentication.guard';
 
 const routes: Routes = [
   {path:"",component:HomeComponent},
   {path:"home",component:HomeComponent},
-  {path:"sucess/:cust_id/:pass",component:SuccessLoginComponent,children:[
+  {path:"sucess/:cust_id/:pass",component:SuccessLoginComponent,canActivate:[AuthenticationGuard],children:[
     {path:"",component:AccountActivityComponent},
     {path:"account-activity",component:AccountActivityComponent},
     {path:"transfer",component:TransfersComponent},

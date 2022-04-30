@@ -309,3 +309,23 @@ app.get("/transaction", (request, response) => {
     });
 });
 
+//get customer
+app.get("/customer", (request, response) => {
+    // connect(url, parser, callback)
+    mongoClient.connect(dbURL, {useNewUrlParser:true}, (error, client) => {
+        if(error) 
+            throw error;
+        let db = client.db("banking-app");
+        let cursor = db.collection("Customer").find();
+        let users = [];
+        //cursor.forEach(callback1, callback2)
+        cursor.forEach((doc, err) => {
+            if(err)
+                throw err;
+            users.push(doc);
+        }, () => {
+            response.json(users);
+            client.close();
+        });
+    });
+});

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -9,6 +9,17 @@ export class CustomerService {
 
   constructor(private _http:HttpClient) { }
   baseUrl="http://localhost:3002"
+
+  cust_data:any=[]
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    this.getCustomer().subscribe({
+      next:(data)=>this.cust_data=data
+    })
+  }
+  
+  
 
   public getCustomer():Observable<any>{
     return this._http.get(`${this.baseUrl}/customer`)
@@ -23,4 +34,5 @@ export class CustomerService {
     let url=`${this.baseUrl}/customer/${cust_id}/change_pass/${new_pass}`;
     return this._http.put(url,data)
   }
+
 }

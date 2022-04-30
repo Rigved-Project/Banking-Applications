@@ -20,7 +20,9 @@ export class HomeComponent implements OnInit {
     errorMessage : string | undefined = undefined;
   
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._service.ngOnInit()
+  }
  
   handleSubmit() {
     let cust_id = this.loginForm.controls['_id'].value;
