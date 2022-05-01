@@ -31,7 +31,8 @@ export class HomeComponent implements OnInit {
         this._router.navigate(['sucess', data._id,data.password])
       }, 
       error: (err) => {
-        this.errorMessage = err.error.message;
+        alert(err.error.message)
+        //this.errorMessage = err.error.message;
         this.loginForm.reset({});
       }
     });
