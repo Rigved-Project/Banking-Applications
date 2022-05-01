@@ -14,7 +14,7 @@ style="
     <i class="fas fa-user"></i>
     <input formControlName = "_id" type = "number"  placeholder="Customer Id" >
 	<div [hidden]=" loginForm.controls['_id'].valid || loginForm.controls['_id'].pristine">
-		<span>Profile Id is required</span>
+		<span class="text-danger">Profile Id is required</span>
 	</div>
   </div>
 
@@ -22,7 +22,7 @@ style="
     <i class="fas fa-lock"></i>
     <input formControlName = "password" type = "password" placeholder="Password">
 	<div [hidden]="loginForm.controls['password'].valid || loginForm.controls['password'].pristine">
-		<span>Password is required</span>
+		<span class="text-danger">Password is required</span>
 	</div>
   </div>
 

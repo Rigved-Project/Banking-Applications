@@ -1,38 +1,44 @@
 <div>
+    <br>
     <form [formGroup] = "FormValue" (ngSubmit) = "handleTransfer()" >
-        <div class = "form-group">
-         <div class = "row">
-             <div class = "col-3">
-                <label>Account Number:</label>
-                 <input formControlName = "account_num_receiver" type = "number" class = "form-control">
-             </div>
-         </div>
-         <div class = "row">
-             <div class = "col-3">
-                <label>Name:</label>
-                 <input formControlName = "name" type = "text" class = "form-control" placeholder="Optional">
-             </div>
-         </div>
-         <div class = "row">
-            <div class = "col-3">
-               <label>IFSC Code:</label>
-                <input formControlName = "IFSC" type = "text" class = "form-control">
-            </div>
-        </div>
-        <div class = "row">
-            <div class = "col-3">
-               <label>Amount:</label>
-                <input formControlName = "send_amount" type = "text" class = "form-control">
-            </div>
-        </div>
-         <br />
-         <div class = "row">
-             <div class = "col-2">
-                 <input type = "submit" value = "Transfer" class = "btn btn-primary">
-             </div>
-             
-         </div>
-     </div>
+        <table>
+            <tr>
+                <th><label>Account Number:</label></th>
+                <td>
+                    <input formControlName = "account_num_receiver" type = "number" class = "form-control">
+                 <div [hidden]="FormValue.controls['account_num_receiver'].valid || FormValue.controls['account_num_receiver'].pristine">
+                     <span class="text-danger">Account Number Required</span>
+                 </div>
+                </td>
+            </tr>
+            <tr>
+                <th><label>Name:</label></th>
+                <td><input formControlName = "name" type = "text" class = "form-control" placeholder="Optional"></td>
+            </tr>
+            <tr>
+                <th><label>IFSC Code:</label></th>
+                <td>
+                    <input formControlName = "IFSC" type = "text" class = "form-control">
+                <div [hidden]="FormValue.controls['IFSC'].valid || FormValue.controls['IFSC'].pristine">
+                    <span class="text-danger">IFSC Code Required</span>
+                </div>
+                </td>
+            </tr>
+            <tr>
+                <th><label>Amount:</label></th>
+                <td>
+                    <input formControlName = "send_amount" type = "text" class = "form-control">
+                <div [hidden]="FormValue.controls['send_amount'].valid || FormValue.controls['send_amount'].pristine">
+                    <span class="text-danger">Amount must be between 500 to 10000</span>
+                </div>
+                </td>
+            </tr>
+            <tr>
+                <td><input type = "submit" value = "Transfer" class = "btn btn-primary" [disabled]="FormValue.invalid"></td>
+            </tr>
+           
+        </table>
+        
   </form>
   <br>
   <div *ngIf="formValue">
@@ -41,12 +47,21 @@
                 <div class = "alert alert-danger">{{errorMessage}}</div>
             </div>
         </div>
-      <div>
-          Enter Transaction Password: <input type="password" [formControl]="password" class = "form-control">
-      </div>
-      <br>
-      <div>
-          <input type="submit" value="Submit" (click)="handleSubmit()">
-      </div>
-  </div>
+        <table>
+            <tr>
+                <th>Enter Transaction Password:</th>
+                <td>
+                    <input type="password" [formControl]="password" class = "form-control">
+          <div [hidden]="password.valid || password.pristine">
+              <span class="text-danger">Password is required</span>
+          </div>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Submit" (click)="handleSubmit()" [disabled]="password.invalid" class="btn btn-info"></td>
+            </tr>
+        </table>
+      
+      
+  
 </div>

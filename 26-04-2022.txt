@@ -1,0 +1,15 @@
+Todays Activity 26-04-2022
+
+Operations in Web Services done
+1)	Bank	
+2)	Customer
+3)	Account
+4)	Address
+5)	Transaction 
+6)	Password
+
+use port number 3002
+
+Apurva Adhole : Customer,  Password
+Jayesh Saindane : Account
+Sumit Singh : Transaction

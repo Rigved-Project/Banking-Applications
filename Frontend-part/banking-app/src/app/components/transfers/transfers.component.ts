@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AccountService } from 'src/app/service/account.service';
 import { TransactionService } from 'src/app/service/transaction.service';
-
 
 @Component({
   selector: 'app-transfers',
@@ -11,6 +10,7 @@ import { TransactionService } from 'src/app/service/transaction.service';
   styleUrls: ['./transfers.component.css']
 })
 export class TransfersComponent implements OnInit {
+
   Last_Tran_Id:undefined | any=undefined
   Account_data:undefined | any=undefined
   formValue:undefined | any=undefined
@@ -39,12 +39,13 @@ export class TransfersComponent implements OnInit {
       }
     })
   }
-
   FormValue:FormGroup=this._builder.group({
-    account_num_receiver:[''],
+    account_num_receiver:['',Validators.required],
     name:[''],
-    IFSC:[''],
-    send_amount:['']
+    IFSC:['',Validators.required],
+    send_amount:['',Validators.compose([
+      Validators.min(500),Validators.max(10000),Validators.required
+    ])]
   })
 
   handleTransfer(){
@@ -55,7 +56,7 @@ export class TransfersComponent implements OnInit {
 
   errorMessage:undefined | any = undefined
 
-  password=new FormControl('')
+  password=new FormControl('',Validators.required)
 
   handleSubmit(){
     this._activated_route.parent?.params.subscribe({
@@ -84,7 +85,7 @@ export class TransfersComponent implements OnInit {
                 console.log(data)
               }
             })
-            this._route.navigate(["sucess",params['cust_id'],params['pass'],"account-activity"])
+            this._route.navigate(['home'])
           },
           error:(err)=>{
             this.errorMessage=err.error.message
