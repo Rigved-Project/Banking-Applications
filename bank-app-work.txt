@@ -4,7 +4,7 @@ Back end ----> app.js ->Web Services
                  3.Apurva --> Bank , Customer
 
 Front end ---->
-               1.Jayesh --> Account Activity, Change password,  Transfer component coding , Also help to develop guard section with apurva. 
+               1.Jayesh -->Develope Structure of all components. Also done Account Activity, Change password, Transfer component coding , Also help to develop guard section with apurva. 
                2.Sumit --> UI design of about us,contact us, Investor
                3.Apurva -->Component design of home ,Guard and UI design of home and after login part
 
