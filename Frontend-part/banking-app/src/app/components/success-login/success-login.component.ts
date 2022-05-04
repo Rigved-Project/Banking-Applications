@@ -21,7 +21,7 @@ export class SuccessLoginComponent implements OnInit {
     this._activated_rout.params.subscribe((params:Params)=>{
       // this.cust_id=params['cust_id'];
       // this.pass=params['pass'];
-      this._cust_service.login(params['cust_id'],params['pass']).subscribe({
+      this._cust_service.getCust(params['cust_id']).subscribe({
         next:(data)=>this.customer=data,
         error:(err)=>this.cust_err=err
       })

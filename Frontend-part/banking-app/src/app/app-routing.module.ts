@@ -16,7 +16,7 @@ import { AuthenticationGuard } from './guard/authentication.guard';
 const routes: Routes = [
   {path:"",component:HomeComponent},
   {path:"home",component:HomeComponent},
-  {path:"sucess/:cust_id/:pass",component:SuccessLoginComponent,canActivate:[AuthenticationGuard],children:[
+  {path:"sucess/:cust_id/:pass",component:SuccessLoginComponent,children:[
     {path:"",component:AccountActivityComponent},
     {path:"account-activity",component:AccountActivityComponent},
     {path:"transfer",component:TransfersComponent},

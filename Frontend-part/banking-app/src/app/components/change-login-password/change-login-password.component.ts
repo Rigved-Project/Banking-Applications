@@ -29,7 +29,8 @@ export class ChangeLoginPasswordComponent implements OnInit {
               //this.modifiedCount=data.modifiedCount
             }
           });
-          this._transaction_service.updatePasslogin(params['cust_id'],params['pass'],this.password.value,undefined).subscribe({
+          let pass={pass:params['pass']}
+          this._transaction_service.updatePasslogin(params['cust_id'],this.password.value,pass).subscribe({
             next:(data)=>console.log(data)
           })
           

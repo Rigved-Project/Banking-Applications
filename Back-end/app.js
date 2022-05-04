@@ -4,8 +4,17 @@ let mongoClient=require("mongodb").MongoClient;
 let parser=require("body-parser");
 const { request } = require("http");
 const { response } = require("express");
-
+let bcrypt=require("bcryptjs");
 let app=express();
+
+const securePassword = async (password)=>{
+    let passwordHash= await bcrypt.hash(password, 10);
+    console.log(passwordHash);
+    let passwordMatch= await bcrypt.compare(password,passwordHash);
+    //console.log(passwordMatch)
+}
+
+securePassword('123')
 
 let dbURL="mongodb://localhost:27017";
 
@@ -86,10 +95,20 @@ app.get("/customer/:cust_id/pass/transaction/:tran_pass",(request,response)=>{
             let cust_id=parseInt(request.params.cust_id);
             let tran_pass=request.params.tran_pass
             let db=client.db("banking-app");
-            db.collection("Account").findOne({customer_id:cust_id,password: tran_pass}).then((doc)=>{
+            db.collection("Account").findOne({customer_id:cust_id}).then((doc)=>{
                 if(doc!=null){
-                    let pass=doc.password;
-                    response.status(200).json(pass);
+                    const securePassword =  async(Tran_pass,db_pass)=>{
+                        let passwordMatch=await bcrypt.compare(Tran_pass,db_pass);
+                        //console.log(passwordMatch)
+                        if(passwordMatch==true){
+                            response.status(200).json(doc)
+    
+                        }else {
+                            response.status(404).json({"message":`password is wrong`})
+                        }
+                    }
+                    securePassword(tran_pass,doc.password);
+                    
                 }else{
                     response.status(404).json({"message":`Please enter correct password`})
                 }
@@ -108,35 +127,51 @@ app.put("/customer/:cust_id/:trans_pass",(request,response)=>{
             let cust_id=parseInt(request.params.cust_id);
             let pass=request.params.trans_pass;
             let db=client.db("banking-app");
-            db.collection("Account").updateOne({customer_id:cust_id},{$set:{password:pass}}).then((doc)=>{
-                response.status(200).json(doc);
-                client.close();
-            })
+            const securePassword = async (cust_id,pass)=>{
+                let passwordHash= await bcrypt.hash(pass, 10);
+                //console.log(passwordHash);
+                db.collection("Account").updateOne({customer_id:cust_id},{$set:{password:passwordHash}}).then((doc)=>{
+                    response.status(200).json(doc);
+                    client.close();
+                })
+                
+            }
+
+            securePassword(cust_id,pass)
         }
     })
 })
 
-//a)	Update password transaction old and new password using customer id and old password
+//a)	Update Transaction password transaction old and new password using customer id and old password
 //url=/customer/:cust_id/transaction/:old_pass/change_pass/:new_pass
-app.put("/customer/:cust_id/transaction/:old_pass/change_pass/:new_pass",(request,response)=>{
+app.put("/customer/:cust_id/transaction/old_pass/change_pass/:new_pass",(request,response)=>{
     mongoClient.connect(dbURL,{useNewUrlParser:true},(error,client)=>{
         if(error){
             throw error
         } else{
             let cust_id=parseInt(request.params.cust_id);
-            let old_pass=request.params.old_pass;
+            let old_pass=request.body.pass
             let new_pass=request.params.new_pass;
-            let db=client.db("banking-app");
-            db.collection("Password").updateOne({customer_id:cust_id},{$set:{old_transaction_password:old_pass, new_transaction_password:new_pass,transaction_datetime:new Date().toUTCString()}}).then((doc)=>{
-                response.status(200).json(doc);
-                client.close();
-            })
+            const securePassword = async (cust_id,old_pass,new_pass)=>{
+                let passwordHash= await bcrypt.hash(new_pass, 10);
+                //console.log(passwordHash);
+                let date=new Date();
+                let curr_date_time=date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0];
+                let db=client.db("banking-app");
+                db.collection("Password").updateOne({customer_id:cust_id},{$set:{old_transaction_password:old_pass, new_transaction_password:passwordHash,transaction_datetime:curr_date_time}}).then((doc)=>{
+                    response.status(200).json(doc);
+                    client.close();
+                })
+                
+            }
+
+            securePassword(cust_id,old_pass,new_pass)
         }
     })
 })
 
 //Customer Login Service
-app.get("/customer/:cust_id/:pass" , (request , response) =>{
+app.get("/customer/:cust_id/:pass" , async(request , response) =>{
     let cust_id = parseInt(request.params.cust_id);
     let pass = request.params.pass;
     mongoClient.connect(dbURL , {useNewUrlParser: true} , (error , client) =>{
@@ -144,10 +179,21 @@ app.get("/customer/:cust_id/:pass" , (request , response) =>{
             throw error;
         }else {
             let db = client.db("banking-app");
-            db.collection("Customer").findOne({_id:cust_id , password : pass})
+            db.collection("Customer").findOne({_id:cust_id})
             .then((doc) => {
                 if (doc!=null) {
-                    response.json(doc)
+                    const securePassword =  async(login_pass,db_pass)=>{
+                        let passwordMatch=await bcrypt.compare(login_pass,db_pass);
+                        //console.log(passwordMatch)
+                        if(passwordMatch==true){
+                            response.status(200).json(doc)
+    
+                        }else {
+                            response.status(404).json({"message":`password is wrong`})
+                        }
+                    }
+                    securePassword(pass,doc.password);
+                    
                 }else{
                     response.status(404).json({"message":`sorry id or password is wrong`} )
                 }
@@ -157,7 +203,28 @@ app.get("/customer/:cust_id/:pass" , (request , response) =>{
     });
 });
 
-
+//Customer using customer id
+app.get("/cust/:cust_id" , async(request , response) =>{
+    let cust_id = parseInt(request.params.cust_id);
+    let pass = request.params.pass;
+    mongoClient.connect(dbURL , {useNewUrlParser: true} , (error , client) =>{
+        if(error) {
+            throw error;
+        }else {
+            let db = client.db("banking-app");
+            db.collection("Customer").findOne({_id:cust_id})
+            .then((doc) => {
+                if (doc!=null) {
+                    response.status(200).json(doc)
+                    
+                }else{
+                    response.status(404).json({"message":`sorry id or password is wrong`} )
+                }
+                client.close();
+            });
+        }
+    });
+});
 
 //Update password of a customer
 app.put("/customer/:cust_id/change_pass/:new_pass" , (request , response) => {
@@ -168,22 +235,27 @@ app.put("/customer/:cust_id/change_pass/:new_pass" , (request , response) => {
             throw error;
         }else{
             let db = client.db("banking-app");
-           
-            db.collection("Customer").updateOne({_id:cust_id},{$set:{password:new_pass}})
-            .then((doc) => {
+            const securePassword = async (cust_id,new_pass)=>{
+                let passwordHash= await bcrypt.hash(new_pass, 10);
+                //console.log(passwordHash)
+                db.collection("Customer").updateOne({_id:cust_id},{$set:{password:passwordHash}})
+                .then((doc) => {
                 response.json(doc);
-                client.close();
-                
-            });
+                client.close();  
+                });
+            }
+
+            securePassword(cust_id,new_pass);
 
         }
     });
 });
 
-//Update password customer old and new password using customer id and old password
+//Update customer password customer old and new password using customer id and old password
 app.put("/customer/:cust_id/:old_pass/change_pass/:new_pass" , (request , response) => {
     let cust_id = parseInt(request.params.cust_id);
-    let old_pass = request.params.old_pass;
+    let old_pass = request.body.pass;
+    console.log(old_pass)
     let new_pass = request.params.new_pass;
    
     mongoClient.connect(dbURL , {useNewUrlParser:true} , (error , client) => {
@@ -191,20 +263,28 @@ app.put("/customer/:cust_id/:old_pass/change_pass/:new_pass" , (request , respon
             throw error;
         }else {
             let db= client.db("banking-app");
+            const securePassword = async (cust_id,old_pass,new_pass)=>{
+                let passwordHash= await bcrypt.hash(new_pass, 10);
+                console.log(passwordHash);
+                let date=new Date();
+                let curr_date_time=date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0];
+                db.collection("Password").updateOne({customer_id:cust_id },{$set:{old_login_password:old_pass,new_login_password:passwordHash,login_datetime:curr_date_time}})
+                .then((doc) => {
+                    response.json(doc);
+                    client.close();
+    
+                });
+    
+            }
 
-            db.collection("Password").updateOne({customer_id:cust_id },{$set:{old_login_password:old_pass,new_login_password:new_pass,login_datetime:new Date().toUTCString()}})
-            .then((doc) => {
-                response.json(doc);
-                client.close();
-
-            });
+            securePassword(cust_id,old_pass,new_pass)
         }
     });
 });
 //create the services for Banking application
 
    
-  
+        //get Transaction detail on basis of account_num_sender
         app.get("/customer/cust_id/transaction/:account_id_sender", (request, response) => {
                 // connect(url, parser, callback)
                     let account_id_sender = parseInt(request.params.account_id_sender);
@@ -227,7 +307,7 @@ app.put("/customer/:cust_id/:old_pass/change_pass/:new_pass" , (request , respon
                     });
                 });
 
-                ///customer/cust_id/transaction/account_receiver/:account_id_receiver
+                ///get Transaction detail on basis of account_id_receiver
        
                 app.get("/customer/cust_id/transaction/account_receiver/:account_id_receiver", (request, response) => {
                     // connect(url, parser, callback)
@@ -264,6 +344,8 @@ app.put("/customer/:cust_id/:old_pass/change_pass/:new_pass" , (request , respon
                     let account_num_receiver=customer.account_num_receiver
                     let IFSC_code=customer.IFSC
                     let send_amount=customer.send_amount
+                    let date=new Date();
+                    let curr_date_time=date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0];
                     var val = Math.floor(1000 + Math.random() * 1000);
                     console.log(val);
                     db.collection("Transaction").insertOne({"_id": transfer_id,
@@ -271,7 +353,7 @@ app.put("/customer/:cust_id/:old_pass/change_pass/:new_pass" , (request , respon
                     "account_num_sender" : account_num_sender,
                     "account_num_receiver" : account_num_receiver,
                     "type" : "credit",
-                    "datetime" : new Date().toUTCString(),
+                    "datetime" : curr_date_time,
                     "IFSC" : IFSC_code,
                     "send_amount" : send_amount
                 })

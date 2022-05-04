@@ -10,6 +10,9 @@ export class InvestorsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    
   }
+
+  
 
 }

@@ -38,7 +38,8 @@ export class ChangeTransferPasswordComponent implements OnInit {
             this.modifiedCount=data.modifiedCount
           }
         });
-        this._transaction_service.updatePassTrans(params['cust_id'],this.account.password,this.password.value,undefined).subscribe({
+        let pass={pass:this.account.password}
+        this._transaction_service.updatePassTrans(params['cust_id'],this.password.value,pass).subscribe({
           next:(data)=>console.log(data)
         })
         this._account_service.getAccount(params['cust_id']).subscribe({

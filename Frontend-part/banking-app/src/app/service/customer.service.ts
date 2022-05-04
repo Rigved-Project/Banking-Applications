@@ -30,6 +30,11 @@ export class CustomerService {
     let url = `${this.baseUrl}/customer/${cust_id}/${pass}`;
     return this._http.get(url)
   } 
+
+  public getCust(cust_id: number):Observable<any>{
+    let url=`${this.baseUrl}/cust/${cust_id}`;
+    return this._http.get(url)
+  }
   public updateLoginPass(cust_id:number,new_pass:any,data:any):Observable<any>{
     let url=`${this.baseUrl}/customer/${cust_id}/change_pass/${new_pass}`;
     return this._http.put(url,data)

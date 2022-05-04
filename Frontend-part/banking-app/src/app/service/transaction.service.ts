@@ -20,13 +20,13 @@ export class TransactionService {
     return this._http.get(url)
   }
 
-  public updatePassTrans(cust_id:number,old_pass:any,new_pass:any,data:any):Observable<any>{
-    let url=`${this.baseUrl}/customer/${cust_id}/transaction/${old_pass}/change_pass/${new_pass}`;
+  public updatePassTrans(cust_id:number,new_pass:any,data:any):Observable<any>{
+    let url=`${this.baseUrl}/customer/${cust_id}/transaction/old_pass/change_pass/${new_pass}`;
     return this._http.put(url,data)
   }
 
-  public updatePasslogin(cust_id:number,old_pass:any,new_pass:any,data:any):Observable<any>{
-    let url=`${this.baseUrl}/customer/${cust_id}/${old_pass}/change_pass/${new_pass}`;
+  public updatePasslogin(cust_id:number,new_pass:any,data:any):Observable<any>{
+    let url=`${this.baseUrl}/customer/${cust_id}/old_pass/change_pass/${new_pass}`;
     return this._http.put(url,data)
   }
 
