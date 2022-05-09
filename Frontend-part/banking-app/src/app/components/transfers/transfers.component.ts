@@ -85,7 +85,7 @@ export class TransfersComponent implements OnInit {
                 console.log(data)
               }
             })
-            this._route.navigate(['home'])
+            this._route.navigate(['sucess',params['cust_id'],params['pass']])
           },
           error:(err)=>{
             this.errorMessage=err.error.message

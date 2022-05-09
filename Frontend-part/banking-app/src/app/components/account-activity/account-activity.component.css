@@ -1,3 +1,14 @@
-div{
-    background-color: rgb(246, 241, 234);
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+
+  th{
+    background-color: rgb(108, 218, 240);
+    
+  }
+
+h3{
+  margin-top: 10px;
 }
+

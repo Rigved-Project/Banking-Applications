@@ -6,6 +6,8 @@ const { request } = require("http");
 const { response } = require("express");
 let bcrypt=require("bcryptjs");
 let app=express();
+let swaggerJsDoc=require('swagger-jsdoc');
+let swaggerUI=require('swagger-ui-express')
 
 const securePassword = async (password)=>{
     let passwordHash= await bcrypt.hash(password, 10);
@@ -14,19 +16,91 @@ const securePassword = async (password)=>{
     //console.log(passwordMatch)
 }
 
-securePassword('123')
+securePassword('sumit123')
 
 let dbURL="mongodb://localhost:27017";
 
 let port=3002;
+
+let swaggerOptions={
+    swaggerDefinition:{
+        info:{
+            title:"Customer API",
+            description: "Customer API Information",
+            contact:{
+                name:"Amazing Developer"
+            },
+            servers:["http://localhost:3002"]
+        }
+    },
+    apis:["App.js"]
+}
+
+let swaggerDocs=swaggerJsDoc(swaggerOptions)
 
 app.listen(port,()=>console.log(`Server running in ${port}`));
 
 app.use(parser.json());
 
 app.use(cors());
+
+app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(swaggerDocs));
+
+//Routes
+/**
+ * @swagger
+ * /customer:
+ *  get:
+ *    tags:
+ *       - Get Customer
+ *    description: Use to request all Customer
+ *    responses:
+ *      '200':
+ *          description: A successful response
+*/
+
+//get customer
+app.get("/customer", (request, response) => {
+    // connect(url, parser, callback)
+    mongoClient.connect(dbURL, {useNewUrlParser:true}, (error, client) => {
+        if(error) 
+            throw error;
+        let db = client.db("banking-app");
+        let cursor = db.collection("Customer").find();
+        let users = [];
+        //cursor.forEach(callback1, callback2)
+        cursor.forEach((doc, err) => {
+            if(err)
+                throw err;
+            users.push(doc);
+        }, () => {
+            response.json(users);
+            client.close();
+        });
+    });
+});
+
+/**
+ * @swagger
+ * /customer/{cust_id}:
+ *  get:
+ *    tags:
+ *      - ID params
+ *    description: Get by Customer Id
+ *    parameters:
+ *         - name: cust_id
+ *           description: Enter Customer Id 
+ *           in: path
+ *           type: integer
+ *           required: true
+ *    responses:
+ *      '200':
+ *          description: A successful response
+*/
+
 //a)	Get name, account number, account type and available balance using customer id
 //url=/customer/:cust_id
+
 
 app.get("/customer/:cust_id",(request,response)=>{
     mongoClient.connect(dbURL,{useNewUrlParser:true},(error,client)=>{
@@ -47,6 +121,34 @@ app.get("/customer/:cust_id",(request,response)=>{
     })
 })
 
+/**
+ * @swagger
+ * /customer/{cust_id}/{account_no_sender}/reduce_balance/{balance}:
+ *  put:
+ *    tags:
+ *      - Update Balance of sender
+ *    description: Update by Id
+ *    parameters:
+ *         - name: cust_id
+ *           description: Enter Customer Id
+ *           in: path
+ *           type: integer
+ *           required: true
+ *         - name: account_no_sender
+ *           description: Enter Account Number of sender
+ *           in: path
+ *           type: integer
+ *           required: true
+ *         - name: balance
+ *           description: Enter Amount
+ *           in: path
+ *           type: integer
+ *           required: true
+ *    responses:
+ *      '200':
+ *          description: A successful response
+*/
+
 //b)	Update balance on basis of account number (Once the amount is transferred to anyone’s account the amount in the destination account table should also be updated as a total amount the account has. Store the date, bankid and IFSC when the transaction happens accordingly)
 //Sender  url=/customer/:cust_id/:account_no/reduce_balance/:balance
 app.put("/customer/:cust_id/:account_no_sender/reduce_balance/:balance",(request,response)=>{
@@ -65,6 +167,34 @@ app.put("/customer/:cust_id/:account_no_sender/reduce_balance/:balance",(request
         }
     })
 })
+
+/**
+ * @swagger
+ * /customer/{account_no_receiver}/{ifsc}/increase_balance/{balance}:
+ *  put:
+ *    tags:
+ *      - Update Balance of Receiver
+ *    description: Update by Id
+ *    parameters:
+ *         - name: account_no_receiver
+ *           description: Enter Account Number of Receiver
+ *           in: path
+ *           type: integer
+ *           required: true
+ *         - name: ifsc
+ *           description: Enter IFSC
+ *           in: path
+ *           type: string
+ *           required: true
+ *         - name: balance
+ *           description: Enter Amount
+ *           in: path
+ *           type: integer
+ *           required: true
+ *    responses:
+ *      '200':
+ *          description: A successful response
+*/
 
 //b)	Update balance on basis of account number (Once the amount is transferred to anyone’s account the amount in the destination account table should also be updated as a total amount the account has. Store the date, bankid and IFSC when the transaction happens accordingly)
 //2)Receiver url= /customer/:account_no/:ifsc/increase _balance/:balance
@@ -142,8 +272,41 @@ app.put("/customer/:cust_id/:trans_pass",(request,response)=>{
     })
 })
 
+/**
+ * @swagger
+ * /customer/{cust_id}/transaction/old_pass/change_pass/{new_pass}:
+ *  put:
+ *    tags:
+ *      - Update ID params
+ *    description: Update by Id
+ *    parameters:
+ *         - name: cust_id
+ *           description: Cust Id get by 
+ *           in: path
+ *           type: integer
+ *           required: true
+ *         - name: new_pass
+ *           description: new password get by 
+ *           in: path
+ *           type: string
+ *           required: true
+ *         - name: reqBody
+ *           description: request body
+ *           in: body
+ *           schema: 
+ *              type: object
+ *              properties:
+ *                  pass:
+ *                     type: string
+ *              required:
+ *                  - pass
+ *    responses:
+ *      '200':
+ *          description: A successful response
+*/
+
 //a)	Update Transaction password transaction old and new password using customer id and old password
-//url=/customer/:cust_id/transaction/:old_pass/change_pass/:new_pass
+//url=/customer/:cust_id/transaction/old_pass/change_pass/:new_pass
 app.put("/customer/:cust_id/transaction/old_pass/change_pass/:new_pass",(request,response)=>{
     mongoClient.connect(dbURL,{useNewUrlParser:true},(error,client)=>{
         if(error){
@@ -169,6 +332,30 @@ app.put("/customer/:cust_id/transaction/old_pass/change_pass/:new_pass",(request
         }
     })
 })
+
+
+/**
+ * @swagger
+ * /customer/{cust_id}/{pass}:
+ *  get:
+ *    tags:
+ *      - Get ID params
+ *    description: Update by Id
+ *    parameters:
+ *         - name: cust_id
+ *           description: Cust Id get by 
+ *           in: path
+ *           type: integer
+ *           required: true
+ *         - name: pass
+ *           description: Password get by 
+ *           in: path
+ *           type: string
+ *           required: true
+ *    responses:
+ *      '200':
+ *          description: A successful response
+*/
 
 //Customer Login Service
 app.get("/customer/:cust_id/:pass" , async(request , response) =>{
@@ -391,23 +578,26 @@ app.get("/transaction", (request, response) => {
     });
 });
 
-//get customer
-app.get("/customer", (request, response) => {
-    // connect(url, parser, callback)
-    mongoClient.connect(dbURL, {useNewUrlParser:true}, (error, client) => {
-        if(error) 
-            throw error;
-        let db = client.db("banking-app");
-        let cursor = db.collection("Customer").find();
-        let users = [];
-        //cursor.forEach(callback1, callback2)
-        cursor.forEach((doc, err) => {
-            if(err)
-                throw err;
-            users.push(doc);
-        }, () => {
-            response.json(users);
-            client.close();
-        });
-    });
-});
+/**
+ * @swagger
+ * /cust/{id}:
+ *  delete:
+ *    tags:
+ *      - Delete ID params
+ *    description: delete by Id
+ *    parameters:
+ *         - name: id
+ *           description: Id get by 
+ *           in: path
+ *           type: integer
+ *           required: true
+ *    responses:
+ *      '200':
+ *          description: A successful response
+*/
+
+app.delete('/cust/:id',(req,res)=>{
+    res.status(200).json({
+        deletId:req.params.id
+    })
+})

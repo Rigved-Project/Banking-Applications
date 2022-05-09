@@ -27,8 +27,8 @@ export class ChangeTransferPasswordComponent implements OnInit {
     })
   }
 
-  password=new FormControl('',Validators.required)
-  again_pass=new FormControl('',Validators.required)
+  password=new FormControl('',Validators.compose([Validators.pattern("^[0-9]+$"),Validators.minLength(4),Validators.maxLength(4),Validators.required]))
+  again_pass=new FormControl('',Validators.compose([Validators.pattern("^[0-9]+$"),Validators.minLength(4),Validators.maxLength(4),Validators.required]))
   handleUpdate(){
     if(this.password.value==this.again_pass.value){
     this._actived_rout.parent?.parent?.params.subscribe({

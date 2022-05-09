@@ -33,5 +33,32 @@ export class SuccessLoginComponent implements OnInit {
       
     })
   }
+
+  handleRefresh(){
+    this._activated_rout.params.subscribe((params:Params)=>{
+      // this.cust_id=params['cust_id'];
+      // this.pass=params['pass'];
+      
+      this._account_service.getAccount(params['cust_id']).subscribe({
+        next:(data)=>this.account=data,
+        error:(err)=>this.acc_err=err
+      })
+
+      
+    })
+  }
+
+  //url="https://cdn.i.haymarketmedia.asia/?n=campaign-india%2fcontent%2fjayeshullatil.jpg&h=570&w=855&q=100&v=20170226&c=1"
+  url="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
+  onselectFile(e: any){
+    console.log(e.target.files)
+    if(e.target.files){
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload=(event:any)=>{
+        this.url=event.target.result;
+      }
+    }
+  }
  
 }

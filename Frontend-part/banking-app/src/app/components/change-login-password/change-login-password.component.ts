@@ -18,8 +18,8 @@ export class ChangeLoginPasswordComponent implements OnInit {
     
   }
 
-  password=new FormControl('',Validators.required)
-  again_pass=new FormControl('',Validators.required)
+  password=new FormControl('',Validators.compose([Validators.pattern("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()]).{8,20}$"),Validators.required]))
+  again_pass=new FormControl('',Validators.compose([Validators.pattern("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()]).{8,20}$"),Validators.required]))
   handleUpdate(){
     if(this.password.value==this.again_pass.value){
       this._actived_rout.parent?.parent?.params.subscribe({

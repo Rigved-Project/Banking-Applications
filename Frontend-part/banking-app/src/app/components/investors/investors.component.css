@@ -1,14 +1,55 @@
 body{
   background-color: rgb(246, 241, 234);
+
+ /* color:rgb(246, 241, 234*/
 }
 
 h3 {
-    font-size: 40px
+    font-size: 40px;
+    /* background-color: black;
+    color:chartreuse; */
 }
 
 h2 {
     text-align: center;
     font-style: italic;
-    font-size: 25px;
+    font-size: 30px;
+    color:rgb(0, 115, 255);
     font-weight: normal;
   }
+.card{
+    height:fit-content;
+    outline-color: orangered;
+    background-color: black;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    margin-right: 10%;
+    margin-left:10%;
+    outline-style:groove;
+
+  }
+  
+footer {
+  text-align: center;
+  padding: 10px;
+  border-width: 50;
+  background-color: black;
+  color: white;
+}
+
+img{
+  width: 200px;
+  height: 200px;
+}
+
+#i1{
+  margin-left: 50px;
+}
+
+#i2{
+  padding-left: 50px;
+}
+
+#i3{
+  padding-bottom: -50px;
+}
